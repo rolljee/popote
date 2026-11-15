@@ -1,0 +1,19 @@
+node_modules
+dist
+elm-stuff
+data
+
+# Ne doivent jamais entrer dans une couche d'image.
+.env
+*.env
+
+.git
+.github
+.gitignore
+.dockerignore
+Dockerfile
+.DS_Store
+
+README.md
+test
+scripts

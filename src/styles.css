@@ -1,0 +1,238 @@
+/*
+ * La Popote — cuisine de famille : papier crème, tomate, basilic, safran.
+ */
+:root {
+	--ground: #fbf5ec;
+	--paper: #fffdf9;
+	--paper-2: #f6eee2;
+	--rule: #eadfce;
+	--rule-strong: #d9c8b0;
+	--ink: #2d241e;
+	--ink-2: #6b5d52;
+	--ink-3: #9a8b7e;
+	--tomato: #e4572e;
+	--tomato-deep: #c4421d;
+	--tomato-soft: #fde4da;
+	--basil: #4a7c59;
+	--basil-soft: #e1eee4;
+	--saffron: #f2b134;
+	--saffron-soft: #fdf0d2;
+	--shadow: 0 1px 0 rgba(45, 36, 30, 0.04), 0 6px 18px rgba(80, 50, 20, 0.07);
+	--font: 'Atkinson Hyperlegible Next', system-ui, sans-serif;
+	--display: 'Fraunces', Georgia, serif;
+	color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--ground: #1b1714;
+		--paper: #25201c;
+		--paper-2: #2e2823;
+		--rule: #3a322b;
+		--rule-strong: #4c4238;
+		--ink: #f3ebe1;
+		--ink-2: #c3b5a7;
+		--ink-3: #8f8173;
+		--tomato: #f06a43;
+		--tomato-deep: #ff8360;
+		--tomato-soft: #4a2a1f;
+		--basil: #8cc49c;
+		--basil-soft: #253a2b;
+		--saffron: #f5c35a;
+		--saffron-soft: #44361a;
+		--shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 6px 18px rgba(0, 0, 0, 0.25);
+		color-scheme: dark;
+	}
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+	background: var(--ground);
+	color: var(--ink);
+	font: 16px/1.45 var(--font);
+	-webkit-font-smoothing: antialiased;
+}
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: default; }
+:where(button, input, a):focus-visible { outline: 2px solid var(--tomato); outline-offset: 2px; }
+
+.app { max-width: 760px; margin: 0 auto; padding: 0 16px 64px; }
+
+/* ——— En-tête ——— */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 20px 0 8px; }
+.brand { display: flex; align-items: center; gap: 10px; margin: 0; font: 800 28px/1 var(--display); letter-spacing: -0.01em; }
+.brand-mark { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; background: var(--tomato-soft); font-size: 24px; transform: rotate(-6deg); }
+.tabs { display: flex; gap: 4px; padding: 4px; background: var(--paper-2); border-radius: 999px; }
+.tab { border: 0; background: none; padding: 7px 16px; border-radius: 999px; color: var(--ink-2); font-weight: 700; font-size: 14px; }
+.tab.active { background: var(--paper); color: var(--ink); box-shadow: var(--shadow); }
+
+.notice { display: block; width: 100%; margin: 8px 0; padding: 10px 14px; border: 1px solid var(--basil); border-radius: 12px; background: var(--basil-soft); color: var(--ink); text-align: left; animation: rise 0.3s ease-out; }
+.notice::after { content: '✕'; float: right; color: var(--ink-3); }
+
+/* ——— Navigation de semaine ——— */
+.week-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 16px 0 14px; }
+.week-title { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.week-title small { color: var(--ink-3); font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
+.week-title strong { font: 600 24px/1.2 var(--display); }
+.round { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--rule-strong); background: var(--paper); font-size: 22px; line-height: 1; box-shadow: var(--shadow); }
+.round:hover { border-color: var(--tomato); color: var(--tomato); }
+.link { border: 0; background: none; padding: 2px; color: var(--tomato); font-size: 13px; text-decoration: underline; }
+
+/* ——— Gros bouton de tirage ——— */
+.roll {
+	display: flex; align-items: center; justify-content: center; gap: 12px;
+	width: 100%; padding: 18px 20px; border: 0; border-radius: 20px;
+	background: linear-gradient(135deg, var(--tomato) 0%, #f07a3c 55%, var(--saffron) 130%);
+	color: #fff; font: 800 22px/1 var(--display); letter-spacing: 0.01em;
+	box-shadow: 0 10px 24px rgba(228, 87, 46, 0.32), inset 0 -3px 0 rgba(0, 0, 0, 0.12);
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.roll:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(228, 87, 46, 0.38), inset 0 -3px 0 rgba(0, 0, 0, 0.12); }
+.roll:active:not(:disabled) { transform: translateY(1px) scale(0.99); }
+.roll .dice { display: inline-block; font-size: 30px; transition: transform 0.3s; }
+.roll:hover:not(:disabled) .dice { transform: rotate(-20deg) scale(1.1); }
+.roll.is-rolling { animation: wobble 0.5s ease-in-out infinite; }
+.roll.is-rolling .dice { animation: tumble 0.45s linear infinite; }
+.roll:disabled:not(.is-rolling) { opacity: 0.5; }
+.hint { margin: 10px 4px 18px; color: var(--ink-3); font-size: 13px; text-align: center; }
+
+/* ——— Jours ——— */
+.days { display: grid; gap: 12px; }
+.day {
+	background: var(--paper); border: 1px solid var(--rule); border-radius: 18px; padding: 12px 12px 6px;
+	box-shadow: var(--shadow);
+	animation: rise 0.4s ease-out both; animation-delay: calc(var(--i) * 40ms);
+}
+.day.today { border-color: var(--tomato); box-shadow: 0 0 0 2px var(--tomato-soft), var(--shadow); }
+.day.weekend { background: linear-gradient(180deg, var(--saffron-soft), var(--paper) 60%); }
+.day-head { display: flex; align-items: baseline; gap: 8px; padding: 0 6px 6px; }
+.day-head strong { font: 600 19px/1.2 var(--display); }
+.day-head small { color: var(--ink-3); }
+.pill { margin-left: auto; padding: 1px 9px; border-radius: 999px; background: var(--tomato); color: #fff; font-size: 12px; font-weight: 700; }
+
+/* ——— Repas (accordéon) ——— */
+.meal { border-top: 1px dashed var(--rule); }
+.meal-row {
+	display: flex; align-items: center; gap: 10px; width: 100%;
+	padding: 10px 6px; border: 0; background: none; text-align: left; border-radius: 10px;
+}
+.meal-row:hover { background: var(--paper-2); }
+.moment { flex: none; width: 46px; color: var(--ink-3); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+.meal-body { flex: 1; min-width: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; }
+.dish { display: inline-block; font-weight: 700; }
+.dish.muted { color: var(--ink-3); font-weight: 400; font-style: italic; }
+.dish.leftovers { color: var(--basil); }
+.meal-icons { flex: none; display: flex; align-items: center; gap: 6px; color: var(--ink-3); }
+.lock { font-size: 13px; }
+.chevron { display: inline-block; transition: transform 0.2s; }
+.meal.open .chevron { transform: rotate(180deg); color: var(--tomato); }
+.meal-line { display: flex; align-items: center; gap: 6px; }
+.meal-line .meal-row { flex: 1; min-width: 0; }
+.meal.locked .meal-line { background: var(--basil-soft); border-radius: 10px; }
+.meal.locked .meal-row:hover { background: transparent; }
+.keep {
+	flex: none; padding: 6px 12px; margin-right: 4px; border-radius: 999px;
+	border: 1.5px solid var(--basil); background: var(--paper); color: var(--basil);
+	font-size: 13px; font-weight: 700; white-space: nowrap;
+	transition: transform 0.12s ease, background 0.15s ease;
+}
+.keep:hover:not(:disabled) { background: var(--basil-soft); }
+.keep:active:not(:disabled) { transform: scale(0.94); }
+.keep.kept { background: var(--basil); color: #fff; animation: pop 0.35s cubic-bezier(0.2, 1.8, 0.4, 1); }
+.keep:disabled { opacity: 0.4; }
+
+/* Animation du tirage : machine à sous puis « pop » */
+.meal.spinning .dish { color: var(--tomato); animation: reel 0.13s linear infinite; filter: blur(0.4px); }
+.meal.landed .meal-row { animation: flash 0.9s ease-out; }
+.meal.landed .dish { animation: pop 0.5s cubic-bezier(0.2, 1.8, 0.4, 1); }
+
+.tag { display: inline-block; padding: 1px 8px; border-radius: 999px; background: var(--paper-2); color: var(--ink-2); font-size: 12px; font-weight: 700; white-space: nowrap; text-decoration: none; }
+.tag.boite { background: var(--basil-soft); color: var(--basil); }
+.tag.warn { background: var(--saffron-soft); color: #9a6a00; }
+.link-tag { background: var(--tomato-soft); color: var(--tomato-deep); }
+
+.picker { padding: 4px 6px 14px; animation: drop 0.22s ease-out; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.chip { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--rule-strong); background: var(--paper); font-size: 14px; }
+.chip:hover { border-color: var(--tomato); }
+.chip.active { background: var(--tomato); border-color: var(--tomato); color: #fff; }
+.recipe-link { display: inline-block; margin-bottom: 10px; color: var(--tomato-deep); font-weight: 700; }
+.search { width: 100%; padding: 10px 14px; border: 1px solid var(--rule-strong); border-radius: 12px; background: var(--paper); }
+.search:focus { border-color: var(--tomato); outline: none; box-shadow: 0 0 0 3px var(--tomato-soft); }
+.options { list-style: none; margin: 8px 0 0; padding: 0; max-height: 280px; overflow-y: auto; display: grid; gap: 2px; }
+.option { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; padding: 8px 10px; border: 0; border-radius: 10px; background: none; text-align: left; }
+.option:hover { background: var(--paper-2); }
+.option.current { background: var(--tomato-soft); font-weight: 700; }
+.option.used .option-name, .option.off-season .option-name { color: var(--ink-3); }
+.tag.season { background: var(--saffron-soft); color: #8a5d00; }
+.season-picker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.season-caption { color: var(--ink-2); font-size: 14px; margin-right: 4px; }
+.season-picker .chip.active { background: var(--basil); border-color: var(--basil); }
+.option-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.empty { color: var(--ink-3); font-style: italic; }
+
+.week-foot { display: flex; justify-content: center; margin-top: 18px; }
+.ghost { padding: 8px 14px; border: 1px solid var(--rule-strong); border-radius: 12px; background: transparent; color: var(--ink-2); }
+.ghost:hover:not(:disabled) { border-color: var(--tomato); color: var(--tomato); }
+
+/* ——— Plats ——— */
+.dishes { display: grid; gap: 14px; margin-top: 16px; }
+.card { background: var(--paper); border: 1px solid var(--rule); border-radius: 18px; box-shadow: var(--shadow); }
+.add-form { display: grid; gap: 10px; padding: 16px; }
+.add-form h2 { margin: 0; font: 600 20px var(--display); }
+.add-form input:not([type='checkbox']), .edit-form input:not([type='checkbox']) { width: 100%; padding: 10px 12px; border: 1px solid var(--rule-strong); border-radius: 10px; background: var(--paper); }
+.check { display: flex; align-items: center; gap: 8px; color: var(--ink-2); font-size: 14px; }
+.check input { accent-color: var(--basil); width: 18px; height: 18px; }
+.primary { padding: 10px 16px; border: 0; border-radius: 12px; background: var(--tomato); color: #fff; font-weight: 700; }
+.primary:hover:not(:disabled) { background: var(--tomato-deep); }
+.primary:disabled { opacity: 0.45; }
+.danger { padding: 8px 14px; border: 0; border-radius: 12px; background: #b3261e; color: #fff; font-weight: 700; }
+.small { padding: 5px 10px; font-size: 13px; border-radius: 9px; }
+.dish-list { list-style: none; margin: 0; padding: 4px 0; }
+.dish-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; border-top: 1px solid var(--rule); }
+.dish-row:first-child { border-top: 0; }
+.dish-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.row-actions { flex: none; display: flex; gap: 6px; }
+.dish-row.editing { display: block; background: var(--paper-2); }
+.edit-form { display: grid; gap: 8px; }
+.data-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.data-actions small { flex-basis: 100%; color: var(--ink-3); }
+
+/* ——— Catégories ——— */
+.tag.cat { font-weight: 400; }
+.icons { font-size: 14px; letter-spacing: 1px; }
+.category-pickers { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; }
+.category-select { display: grid; gap: 4px; font-size: 13px; color: var(--ink-2); }
+.category-select select { padding: 8px 10px; border: 1px solid var(--rule-strong); border-radius: 10px; background: var(--paper); color: var(--ink); font: inherit; }
+
+/* ——— Idées ——— */
+.ideas { display: grid; gap: 12px; margin-top: 8px; }
+.idea-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.idea { display: grid; gap: 8px; padding: 14px 16px; }
+.idea-head { display: flex; align-items: center; gap: 8px; }
+.idea-head strong { font: 600 19px/1.2 var(--display); }
+.idea-note { margin: 0; color: var(--ink-2); }
+.idea .row-actions { flex-wrap: wrap; }
+a.ghost { text-decoration: none; display: inline-flex; align-items: center; }
+
+/* ——— Animations ——— */
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes drop { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@keyframes reel { 0% { transform: translateY(-3px); opacity: 0.6; } 50% { transform: translateY(2px); opacity: 1; } 100% { transform: translateY(-3px); opacity: 0.6; } }
+@keyframes pop { 0% { transform: scale(0.6); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
+@keyframes flash { 0% { background: var(--saffron-soft); } 100% { background: transparent; } }
+@keyframes tumble { to { transform: rotate(360deg); } }
+@keyframes wobble { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-0.6deg); } 75% { transform: rotate(0.6deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+	*, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
+}
+
+@media (min-width: 980px) {
+	.app { max-width: 1120px; }
+	.days { grid-template-columns: repeat(2, 1fr); align-items: start; }
+	.dishes, .ideas { max-width: 760px; margin-inline: auto; }
+	.idea-list { grid-template-columns: repeat(2, 1fr); }
+}

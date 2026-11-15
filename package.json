@@ -1,0 +1,32 @@
+{
+  "name": "popote",
+  "private": true,
+  "version": "0.1.0",
+  "description": "La Popote — planning des repas de la semaine (Elm + Vite)",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "format": "elm-format src/ --yes",
+    "format:check": "elm-format src/ --validate",
+    "start": "node server/index.js",
+    "dev:server": "POPOTE_TOKEN=dev node --watch server/index.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "aws4fetch": "^1.0.20"
+  },
+  "devDependencies": {
+    "@fontsource/atkinson-hyperlegible-next": "^5.3.0",
+    "@fontsource/fraunces": "^5.3.0",
+    "elm": "^0.19.3-0",
+    "elm-format": "^0.8.8",
+    "vite": "^8.3.4",
+    "vite-plugin-elm": "^3.0.1",
+    "vite-plugin-pwa": "^2.0.0"
+  }
+}
