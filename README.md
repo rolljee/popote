@@ -32,7 +32,7 @@ npm run format
 
 ## Déploiement
 
-Scaleway Serverless Container dans le namespace `kompas`, déclaré dans le
+https://popote.rolljee.fr — Scaleway Serverless Container dans le namespace `kompas`, déclaré dans le
 dépôt Kompas (`popote.tf`). Chaque push sur `main` publie
 `ghcr.io/rolljee/popote:latest` et demande à Scaleway de redéployer. Ce dépôt
 n'exécute jamais Terraform.
